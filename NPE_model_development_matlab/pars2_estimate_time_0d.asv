@@ -1,0 +1,112 @@
+%% Problem set:
+% in this script we address the problem of estimating two parameters with
+% the MDN technique, in a spatially homogeneous setting. 
+% Our first example takes into account a simple wave function, e.g.
+% u(t;a,b)=a+b*t. We also need to exploit and study the 
+% correlation among the parameters. 
+%%
+clear all
+close all
+clc
+
+a_obs=2;
+b_=2;
+theta_obs=[a_obs;omega_obs];
+% we plot our observed function (over time, recall that we will just use one 
+% value, computed in a time t*)
+u_t=@(t,theta) theta(1)*sin(2*pi*theta(2)*t);
+u_t_obs=u_t(linspace(0,10,1e3),[a_obs;omega_obs])+normrnd(0,0.1,[1,1e3]);
+figure(1)
+plot(linspace(0,10,1e3),u_t_obs,'b','LineWidth',2);
+title('observed function over time')
+
+% let us fix t_star
+t_star=0.1;
+u=@(theta) u_t(t_star,theta);
+
+N=1000; %number of random samples
+theta=30*rand([N,2]);
+
+X_data=zeros(N,1);
+X_obs=u(theta_obs);
+
+for j=1:N
+    X_data(j)=u(theta(j,:))+normrnd(0,0.1);
+end
+
+figure(2)
+p1=plot(X_data,theta(:,1),'bo');
+hold on
+p2=plot(X_obs,theta_obs(1),'r*');
+xlabel('data')
+ylabel('amplitude')
+legend([p1,p2],'sampled data for amplitude', 'observed data amplitude')
+title('values against amplitudes')
+
+figure(3)
+p1=plot(X_data,theta(:,2),'bo');
+hold on
+p2=plot(X_obs,theta_obs(2),'r*');
+xlabel('data')
+ylabel('frequency')
+legend([p1,p2],'sampled data for frequency', 'observed data amplitude')
+title('values against frequency')
+
+tol=0;
+loss=1e5;
+s=1
+while(loss>tol)
+
+    % Set up network parameters.
+     nin = 1;			% Number of inputs.
+     nhidden = 5;			% Number of hidden units.
+     ncentres = 2;			% Number of mixture components.
+     dim_target = 2;			% Dimension of target space
+     mdntype = '0';			% Currently unused: reserved for future use
+     alpha = 100;			% Inverse variance for weight initialisation
+				% Make variance small for good starting point
+     
+     net = mdn(nin, nhidden, ncentres, dim_target, mdntype);
+     init_options = zeros(1, 18);
+     init_options(1) = -1;	% Suppress all messages
+     init_options(14) = 10;  % 10 iterations of K means in gmminit
+     net = mdninit(net, alpha, theta, init_options);
+
+     % Set up vector of options for the optimiser.
+     options = zeros(1,18);
+     options(1) = 1;			% This provides display of error values.
+     options(14) = 250;		% Number of training cycles. 
+
+     [net, options] = netopt(net, options, X_data, theta, 'scg');
+
+     loss=mdnerr(net,X_data,theta);
+
+     out_mix = mdn2gmm(mdnfwd(net, X_obs)); %computes the output of the MDN 
+    % model in terms of mixture gaussian parameters
+    
+    mu_obs=out_mix.centres; %centroids
+    prior_obs=out_mix.priors; %priors
+    sigma_obs=cat(3,diag(out_mix.covars(1)*ones(2,1)),diag(out_mix.covars(2)*ones(2,1))); %variances
+    gm_obs = gmdistribution(mu_obs,sigma_obs,prior_obs); %build a gaussian 
+    % mixture object
+    gmPDF_obs = @(x,y) arrayfun( @(x0,y0) pdf(gm_obs,[x0,y0]), x,y); %saving the pdf as
+    %array fun
+    theta = random(gm_obs,N);
+    for i=1:N
+        X_data(i)=u(theta)+normrnd(0,0.1);
+    end
+    
+    f1=figure;
+    fsurf(gmPDF_obs,[-10,10])
+    hold on
+    plot3(theta_obs(1)*ones(100,1),theta_obs(2)*ones(100,1),linspace(0,0.1),'r','LineWidth',2)
+    
+    pause
+    close(f1)
+
+
+  
+
+
+end
+
