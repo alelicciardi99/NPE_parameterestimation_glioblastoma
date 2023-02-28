@@ -14,6 +14,10 @@ Authors:
  ## How to move through the folders:
   Here it is provided a short guide to present the contents of the folders.
   
+  ### NPE_glioma_model
+  
+  This folder contains the definitive pipeline, the Comsol simulated dataset and all the results are summerized on printed tables, either for the two parameters model, either for the three parameters one.
+  
   ### netlab-3.3
   
  Latest version of Netlab library (https://www.mathworks.com/matlabcentral/fileexchange/2654-netlab) - implemented by prof. Nabney, Ian. This library contains the codes for building Mixture Density Neural Nets models. With respect to the linked package, this folder is own-updated and modified in order to correctly run on Matlab23.
@@ -34,9 +38,6 @@ Authors:
   
   This folder contains the first attempts and tests of the pipeline on the Comsol-based simulations of glioma growth with non-homogeneous diffusion and growth, thus the three parameters model.
   
-  ### NPE_glioma_model
-  
-  This folder contains the definitive pipeline, the Comsol simulated dataset and all the results are summerized on printed tables, either for the two parameters model, either for the three parameters one.
   
   
   
