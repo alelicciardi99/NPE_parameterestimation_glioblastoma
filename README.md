@@ -2,8 +2,8 @@
 
 This repository contains Matlab codes for the thesis of the exam of Mathematical Models for Biomedicine, a.y. 2022-23, Master of Science degree in Mathematical Engineering at Politecnico di Torino, held by prof. Chiara Giverso, prof. Luigi Preziosi and prof. Luca Mesin.
 
-The work aimed to develop a Neural Parameter Estimation (NPE) pipeline to predict diffusion and growth parameter of glioblastomas. All the data and packages needed to run and test this codes are in this repository.
-Since this material had been developed to support a university course assignment, this repository provides all the steps and tests followed in order to obtain the definitive Machine Learning model for glioblastomas. Simulations and Data used to train and evaluate the model had been implemented using the software Comsol MultiPhyisics.
+The work aimed to develop a Neural Parameter Estimation (NPE) pipeline to predict diffusion and growth parameter of glioblastomas. All the data and packages needed to run and test these codes are in this repository.
+Since this material had been developed to support a university course assignment, this repository provides all the steps and tests followed in order to obtain the definitive Machine Learning model for glioblastomas. Simulations and Data used to train and evaluate the model had been implemented using the software Comsol MultiPhyisics. 
 
 Authors: 
 - Alessandro Licciardi s296152@studenti.polito.it
