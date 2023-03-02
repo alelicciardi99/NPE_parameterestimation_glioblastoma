@@ -34,7 +34,7 @@ Authors:
   
   This folder contains the first attempts and tests of the pipeline on the Comsol-based simulations of glioma growth with space-homogeneous diffusion and growth, thus the two parameters model.
   
-  ### comsol_trials_2pars
+  ### comsol_trials_3pars
   
   This folder contains the first attempts and tests of the pipeline on the Comsol-based simulations of glioma growth with non-homogeneous diffusion and growth, thus the three parameters model.
   
